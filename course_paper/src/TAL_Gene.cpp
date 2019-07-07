@@ -187,7 +187,7 @@ int main(){
     cout << "Simulating system using time interval " << delt_t << endl;
     cout << "Writing data." << endl;
 
-    std::ofstream out("raw_data_leap.txt");
+    std::ofstream out("raw_data_tau.txt");
     for(int n=0;n<(10*MAX_TIME);n++){
         out << n/10.0 << " " << final_data[n][6] << " " << final_data[n][7] << '\n';
     }
