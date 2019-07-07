@@ -3,14 +3,14 @@
 #include <iomanip>
 #include <random>
 #include <cmath>
-#include <omp.h>
+#include <time.h>
 using namespace std;
 
 /* Declearation */
 
-#define NUM_THREAD 4
-#define MAX_TIME 300000
-#define RPD 4
+#define NUM_THREAD 6
+#define MAX_TIME 3000000
+#define RPD 18
 #define k1 0.00022
 #define k2 0.01875
 #define k3 0.000625
@@ -113,6 +113,7 @@ int main(){
     float spdconst[11] = { k1, 0, k3, 0, k5, k6, k7_OMEGA, k8, k9, k11 };
     float tot_time=0.0;
     float(*final_data)[8] = new float[(MAX_TIME*10)][8];
+    clock_t start, finish;
     #pragma omp parallel for shared(final_data) num_threads(NUM_THREAD)
     for(int n=0;n<(MAX_TIME*10);n++){                                       //Init value to 0
         for(int k=0;k<8;k++){
@@ -120,8 +121,9 @@ int main(){
         }
     }
 
-    #pragma omp parallel for firstprivate(reactant,a,spdconst,tot_time) shared(final_data) num_threads(NUM_THREAD)
+    #pragma omp parallel for firstprivate(reactant,a,spdconst,tot_time,start,finish) shared(final_data) num_threads(NUM_THREAD)
     for(int m=0;m<RPD;m++){                                                 //Caculation
+        start = clock();
         for(int n=0;tot_time < MAX_TIME;n++){
             int pos_rpd = (int)(tot_time*10);
             update(&tot_time,a,spdconst,reactant);
@@ -129,7 +131,8 @@ int main(){
                 final_data[pos_rpd][k] += reactant[k];
             }
         }
-        cout << "Finished RPD " << m+1 << endl;
+        finish = clock();
+        cout << "Finished RPD " << m+1 << " with time " << (float)(finish-start)/(double)(CLOCKS_PER_SEC) << " sec." << endl;
     }
 
     #pragma omp parallel for shared(final_data) num_threads(NUM_THREAD)
