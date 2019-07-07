@@ -141,7 +141,7 @@ int main(){
 
     cout << "Writing data." << endl;
 
-    std::ofstream out2("raw_data.txt");
+    std::ofstream out2("raw_data_ssa.txt");
     for(int n=0;n<(10*MAX_TIME);n++){
         out2 << n/10.0 << " " << final_data[n][6] << " " << final_data[n][7] << '\n';
     }
