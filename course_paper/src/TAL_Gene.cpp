@@ -10,7 +10,7 @@ using namespace std;
 
 #define NUM_THREAD 6
 #define MAX_TIME 3000000
-#define RPD 18
+#define RPD 6
 #define e 2.7182818
 #define TOL_RANGE 0.03
 #define INIT_TAU 10
@@ -154,6 +154,7 @@ int main(){
     float tot_time = 0.0;
     float delt_t = sel_tau(spdconst,reactant);                                  // Using initial number of reactants
     float(*final_data)[8] = new float[(MAX_TIME*10)][8];
+    cout << "Simulating system using time interval " << delt_t << endl;
     clock_t start, finish;
     #pragma omp parallel for shared(final_data) num_threads(NUM_THREAD)
     for(int n=0;n<(MAX_TIME*10);n++){
@@ -183,8 +184,6 @@ int main(){
             final_data[n][p] /= RPD;
         }
     }
-
-    cout << "Simulating system using time interval " << delt_t << endl;
     cout << "Writing data." << endl;
 
     std::ofstream out("raw_data_tau.txt");
