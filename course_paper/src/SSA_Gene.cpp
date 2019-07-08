@@ -10,7 +10,7 @@ using namespace std;
 
 #define NUM_THREAD 6
 #define MAX_TIME 3000000
-#define RPD 18
+#define RPD 6
 #define k1 0.00022
 #define k2 0.01875
 #define k3 0.000625
